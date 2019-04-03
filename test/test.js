@@ -5,21 +5,21 @@
 
  
 
-// Application logic for the test runner
-_app = {};
+
 
 // Dependencies
-_myserver = require('./../app/lib');
+var _myserver = require('./../app/lib');
 var config=require('./../app/config');
 var assert = require('assert');
 var http = require('http');
 var util = require('util');
 var debug = util.debuglog('server');
 
-
+// Application logic for the test runner
+var _app = {};
 
  
-
+// the values to use in order to make the test. the object can be manipulate before running the test
 _app.testValues = {
     low: 0,
     high: 4,
@@ -27,6 +27,7 @@ _app.testValues = {
     correcturl: '/hello',
     badurl: '/random/url',
 };
+// funtion to make a request to the server. Helpfull if we want to test if a route perform well 
 _app.makeGetRequest = function(path,callback){
   // Configure the request details
   var requestDetails = {
@@ -127,6 +128,7 @@ _app.countTests = function(){
 
 // Run all the tests, collecting the errors and successes
 _app.runTests = function(){
+    // lunch the server and then in the call back run the test; because some test require the server running 
     _myserver.init(function(){
          var errors = [];
           var successes = 0;
@@ -134,7 +136,7 @@ _app.runTests = function(){
           var counter = 0;
           for(var key in _app.unit){
              if(_app.unit.hasOwnProperty(key)){
-               var subTests = _app.unit[key];
+               //var subTests = _app.unit[key];
                //for(var testName in subTests){
                   //if(subTests.hasOwnProperty(testName)){
                     (function(){
@@ -202,6 +204,6 @@ _app.produceTestReport = function(limit,successes,errors){
 
 };
 
-
+// lunch the test runner
 _app.runTests();
 

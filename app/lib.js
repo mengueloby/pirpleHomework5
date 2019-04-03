@@ -1,6 +1,6 @@
 /*
- * This is the fith homework for pirple course
- * Made by Frederic PAPY
+ * This library to be tested
+ * 
 */
 
 
@@ -12,25 +12,25 @@ var debug = util.debuglog('server');
 var StringDecoder=require('string_decoder').StringDecoder;
 var config=require('./config');
 
-
 var myserver={};
 
  // Instantiate the HTTP server
     myserver.httpServer = http.createServer(function(req,res){
       myserver.unifiedServer(req,res);
     });
+// function to lunch the server. The callback is because we want to be sure that the server is running before start the test.
 myserver.init = function(callback){
    
     // Start the HTTP server
     myserver.httpServer.listen(config.httpPort,function(){
-      //console.log(config.locale[config.applocale].server_on + config.httpPort +config.locale[config.applocale].server_mode);
+      //console.log(config.locale[config.applocale].server_on + config.httpPort +config.locale[config.applocale].server_mode); in comment because we don't want to see the on the console
     });
     callback();
 }
 
 
 
-// All the server logic for both the http and https server
+// All the server logic 
 myserver.unifiedServer = function(req,res){
 
   // Parse the url
@@ -96,18 +96,24 @@ myserver.unifiedServer = function(req,res){
   });
 };
 
+/*
+*
+*list of function that will be tested
+*
+*/
 
-
-
+// fucntion must always retur a number, the port of server
 myserver.getANumber = function(){
     return config.httpPort;
 }
-
+// function will return randomilly a number between low and high
 myserver.getARamdomNumber = function(low,high){
     return Math.random() * (high - low) + low;
 }
 myserver.getAPalindrome = function(string){
+    //remove all non alphanumeric characters
     string=string.replace(/[^\w]/gi, "").toLowerCase();
+    //split() make an array, reverse() reverse that array and join() convert array to string in order to compare it to the old 
     return string == string.split('').reverse().join('');
 }
 
@@ -134,11 +140,11 @@ var router = {
 
 
 
-// Self invoking only if required directly
+// Self invoking only if required directly. We don't want to start the server just by requiring this library in an other file
 if(require.main === module){
   myserver.init(function(){});
 }
 
 
-// Export the app
+// Export the lib
 module.exports = myserver;
